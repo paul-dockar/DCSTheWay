@@ -12,6 +12,7 @@ import TitleBar from "./components/TitleBar";
 import ConvertModuleWaypoints from "./utils/ConvertModuleWaypoints";
 import GetModuleCommands from "./moduleCommands/GetModuleCommands";
 import askUserAboutSeat from "./moduleCommands/askUserAboutSeat";
+import askUserAboutRoute from "./moduleCommands/askUserAboutRoute";
 import useElectronIpcListeners from "./hooks/useElectronIpcListeners";
 
 const {ipcRenderer} = window.require("electron");
@@ -64,7 +65,8 @@ function App() {
         } else {
             chosenSeat = await askUserAboutSeat(moduleRef.current);
         }
-        const commands = GetModuleCommands(chosenSeat, moduleWaypoints);
+        let chosenRoute = await askUserAboutRoute(moduleRef.current);
+        const commands = GetModuleCommands(chosenRoute, chosenSeat, moduleWaypoints);
         ipcRenderer.send("transfer", commands);
     };
 

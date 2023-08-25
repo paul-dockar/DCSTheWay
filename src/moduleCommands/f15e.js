@@ -1,16 +1,19 @@
+import { BreakfastDining } from "@mui/icons-material";
+
 class f15e {
     static slotVariant = ''
+    static routeVariant = ''
     static #f15eNumberCodes = {
         "0": 3036,
-        "1": 3020,
-        "2": 3021,
-        "3": 3022,
-        "4": 3025,
-        "5": 3026,
-        "6": 3027,
+        "1": 3020,  //A
+        "2": 3021,  //N
+        "3": 3022,  //B
+        "4": 3025,  //W
+        "5": 3026,  //M
+        "6": 3027,  //E
         "7": 3030,
-        "8": 3031,
-        "9": 3032
+        "8": 3031,  //S
+        "9": 3032   //C
     };
 
     static createButtonCommands(waypoints) {
@@ -20,6 +23,21 @@ class f15e {
         } else {
             f15eUFCDevice = 57;
         }
+
+        let chosenRoute;
+        switch (this.routeVariant) {
+            default:
+            case "A": 
+                chosenRoute = this.#f15eNumberCodes[1];
+                break;
+            case "B": 
+                chosenRoute = this.#f15eNumberCodes[3];
+                break;
+            case "C": 
+                chosenRoute = this.#f15eNumberCodes[9];
+                break;
+        }
+
         let delay = 100;
         {
             let payload = [
@@ -51,13 +69,6 @@ class f15e {
                     activate: 1,
                     addDepress: "true",
                 },
-                { // Enter 1 button
-                    device: f15eUFCDevice,
-                    code: this.#f15eNumberCodes[1],
-                    delay: delay,
-                    activate: 1,
-                    addDepress: "true",
-                },
                 { // Press Shift
                     device: f15eUFCDevice,
                     code: 3033,
@@ -65,15 +76,14 @@ class f15e {
                     activate: 1,
                     addDepress: "true",
                 },
-
-                { // Press 1 / A
+                { // Press 3 / B
                     device: f15eUFCDevice,
-                    code: this.#f15eNumberCodes[1],
+                    code: this.#f15eNumberCodes[3],
                     delay: delay,
                     activate: 1,
                     addDepress: "true",
                 },
-                { // Enter 1A into UFC button 10
+                { // Enter B into UFC button 10
                     device: f15eUFCDevice,
                     code: 3010,
                     delay: delay,
@@ -86,36 +96,7 @@ class f15e {
                     delay: delay,
                     activate: 1,
                     addDepress: "true",
-                },
-                { // Enter 1 button
-                    device: f15eUFCDevice,
-                    code: this.#f15eNumberCodes[1],
-                    delay: delay,
-                    activate: 1,
-                    addDepress: "true",
-                },
-                { // Press Shift
-                    device: f15eUFCDevice,
-                    code: 3033,
-                    delay: delay,
-                    activate: 1,
-                    addDepress: "true",
-                },
-
-                { // Press 3 / B
-                    device: f15eUFCDevice,
-                    code: this.#f15eNumberCodes[3],
-                    delay: delay,
-                    activate: 1,
-                    addDepress: "true",
-                },
-                { // Enter 1B into UFC button 1
-                    device: f15eUFCDevice,
-                    code: 3001,
-                    delay: delay,
-                    activate: 1,
-                    addDepress: "true",
-                },
+                }
             ];
             for (const waypoint of waypoints) {
                 let waypointNumber = waypoints.indexOf(waypoint) + 1;
@@ -139,9 +120,9 @@ class f15e {
                     addDepress: "true",
                 });
 
-                payload.push({ // Press B / 3
+                payload.push({ // Press A, B or C route variant
                     device: f15eUFCDevice,
-                    code: this.#f15eNumberCodes[3],
+                    code: chosenRoute,
                     delay: delay,
                     activate: 1,
                     addDepress: "true",
@@ -296,9 +277,9 @@ class f15e {
                     activate: 1,
                     addDepress: "true",
                 },
-                { // press 3 / B
+                { // Press A, B or C route variant
                     device: f15eUFCDevice,
-                    code: this.#f15eNumberCodes[3],
+                    code: chosenRoute,
                     delay: delay,
                     activate: 1,
                     addDepress: "true",

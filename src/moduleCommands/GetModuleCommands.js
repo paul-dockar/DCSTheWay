@@ -7,12 +7,13 @@ import m2000 from "./m2000";
 import av8b from "./av8b";
 import ka50 from "./ka50";
 
-export default function getModuleCommands(module, waypoints) {
+export default function getModuleCommands(route, module, waypoints) {
     switch (module) {
         case "F-15ESE":
         case "F-15ESE_pilot":
         case "F-15ESE_wso":
             f15e.slotVariant = module;
+            f15e.routeVariant = route;
             return f15e.createButtonCommands(waypoints);
         case "F-16C_50":
         case "F-16D_50":
